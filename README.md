@@ -1,2 +1,2 @@
 # Utilities
-Folder of python utilities for automated processes and management. 
+Folder of python utility scripts for automated processes and management. 
