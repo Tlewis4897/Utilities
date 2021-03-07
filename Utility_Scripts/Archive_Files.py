@@ -22,6 +22,7 @@ config = read_json(os.path.join(CURRENT_DIR, 'config.json'))
 
 directory_path = config["directory_path"]
 word_document_path = config["word_document_path"]
+pdf_document_path = config["pdf_document_path"]
 
 def get_file_date(file: str):
     try:
@@ -30,7 +31,6 @@ def get_file_date(file: str):
         mtime = 0
     last_modified_date = datetime.fromtimestamp(mtime)
     file_date = datetime.strftime(last_modified_date, '%Y-%m')
-    print(file_date)
     return file_date
 
 def archive_word_docs(directory_path:str, new_folder_path:str) -> None:
@@ -43,8 +43,26 @@ def archive_word_docs(directory_path:str, new_folder_path:str) -> None:
                 date_to_archive = datetime.strptime(config['date'],'%m-%Y')
                 to_archive_str = datetime.strftime(date_to_archive, '%Y-%m')
                 if get_file_date(root + '/' + name) < to_archive_str:
-                    print(name)
                     shutil.copy(root + '/'+ name, new_folder_path)
                     os.remove(root + '/' + name)
 
-archive_word_docs(directory_path, word_document_path)
+
+def archive_pdf(directory_path:str, new_folder_path:str) -> None:
+    if not os.path.exists(new_folder_path):
+        os.makedirs(new_folder_path)
+    # Search directory for JPG's and PNG's                
+    for root,dirs, files in os.walk(directory_path): 
+        for name in files:
+            if name.endswith(".pdf") or name.endswith(".PDF"):
+                date_to_archive = datetime.strptime(config['date'],'%m-%Y')
+                to_archive_str = datetime.strftime(date_to_archive, '%Y-%m')
+                if get_file_date(root + '/' + name) < to_archive_str:
+                    shutil.copy(root + '/'+ name, new_folder_path)
+                    os.remove(root + '/' + name)
+
+if __name__ == "__main__":
+    try:
+        archive_pdf(directory_path, pdf_document_path)
+        archive_word_docs(directory_path, word_document_path)
+    except Exception as e:
+        print(e)

@@ -1,5 +1,6 @@
 {
     "directory_path": "C:/Your_Path_To_the_directory_to_archive",
     "word_document_path": "C:/Your_path_to_the_archive_folder",
+    "pdf_document_path": "C:/Your_Path_To_PDF_Files",
     "date": "Set date and script will move all files before the set month and year- Format Example-> 01-2000"
 }
