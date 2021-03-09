@@ -37,14 +37,15 @@ file_types = {"new_word": ".docx","old_word":".doc","pdf": ".pdf","ppt_docs":".p
 
 
 def archive_docs(directory_path:str, new_folder_path:str) -> None:
-    # Search directory for JPG's and PNG's 
+    # Loop through dictionary for file types
     for key,vals in file_types.items():
+        # Create dictionary if it doesn't exist
         if not os.path.exists(new_folder_path + key):
-            os.makedirs(new_folder_path + key)               
+            os.makedirs(new_folder_path + key) 
+        # Search directory for files              
         for root,dirs, files in os.walk(directory_path): 
             for name in files:
                 if name.endswith(vals):
-                    print(name)
                     date_to_archive = datetime.strptime(config['date'],'%m-%Y')
                     to_archive_str = datetime.strftime(date_to_archive, '%Y-%m')
                     if get_file_date(root + '/' + name) < to_archive_str:
